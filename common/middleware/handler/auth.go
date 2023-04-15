@@ -11,6 +11,13 @@ import (
 	"github.com/go-admin-team/go-admin-core/sdk/pkg/response"
 )
 
+func LogOut(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  "退出成功",
+	})
+}
+
 func PayloadFunc(data interface{}) jwt.MapClaims {
 	if v, ok := data.(map[string]interface{}); ok {
 		u, _ := v["user"].(SysUser)

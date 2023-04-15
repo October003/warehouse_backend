@@ -5,6 +5,7 @@ import (
 	jwt "github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth"
 	"warehouse/apis"
 	"warehouse/common/middleware"
+	"warehouse/common/middleware/handler"
 )
 
 func InitSysRouter(r *gin.Engine, auth *jwt.GinJWTMiddleware) {
@@ -25,9 +26,9 @@ func NoCheckRoleRouterInit(r *gin.RouterGroup, auth *jwt.GinJWTMiddleware) {
 func CheckRoleRouterInit(r *gin.RouterGroup, auth *jwt.GinJWTMiddleware) {
 	v1 := r.Group("/api/user")
 	{
-		//v1.POST("/register", api.Insert)
 		v1.POST("/login", auth.LoginHandler)
 		// Refresh time can be longer than token timeout
+		v1.POST("/logout", handler.LogOut)
 		v1.GET("/refresh_token", auth.RefreshHandler)
 	}
 	registerBaseRouter(v1, auth)

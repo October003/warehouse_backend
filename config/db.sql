@@ -155,7 +155,7 @@ INSERT ignore INTO sys_menu_api_rule VALUES (82,53);
 INSERT ignore INTO `sys_user` VALUES(1, 'admin', '$2a$10$.Dj5uoorxg3P9Byosj7hbuOFDNM/TVfvwlDHOHq6F1CCWFMHWktaK','系统管理员','电话','',1,1,'2',0,0,'2023-03-24 13:19:21','2023-03-24 13:19:21',NULL);
 
 INSERT ignore INTO sys_role VALUES (1, '系统管理员', '2', 'admin', 1, '', '', 1, '', 1, 1, '2023-03-24 14:20:15.000', '2023-03-24 14:20:15.000', NULL);
-INSERT ignore INTO sys_role VALUES (2, '普通用户', '2', 'admin', 1, '', '', 1, '', 1, 1, '2023-03-24 14:20:15.000', '2023-03-24 14:20:15.000', NULL);
+INSERT ignore INTO sys_role VALUES (2, '普通用户', '2', 'normal', 1, '', '', 1, '', 1, 1, '2023-03-24 14:20:15.000', '2023-03-24 14:20:15.000', NULL);
 
 INSERT ignore INTO sys_dept VALUES (1, 0, '/0/1/', 'XX省', 0, '', '', '2', 1, 1, '2023-03-20 14:44:50.681', '2023-03-20 14:44:50.681', NULL);
 INSERT ignore INTO sys_dept VALUES (11, 1, '/0/1/11/', 'XX市', 1, '', '', '2', 1, 1, '2023-03-20 14:44:50.681', '2023-03-20 14:44:50.681', NULL);

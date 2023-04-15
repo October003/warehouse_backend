@@ -3,11 +3,11 @@ package service
 import (
 	"errors"
 	"github.com/casbin/casbin/v2"
-	"github.com/go-admin-team/go-admin-core/sdk/config"
 	"github.com/go-admin-team/go-admin-core/sdk/service"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	cDto "warehouse/common/dto"
+	"warehouse/config"
 	"warehouse/models"
 	"warehouse/service/dto"
 )
@@ -28,6 +28,15 @@ func (e *SysRole) GetPage(c *dto.SysRoleGetPageReq, list *[]models.SysRole, coun
 		).
 		Find(list).Limit(-1).Offset(-1).
 		Count(count).Error
+	for i := 0; i < len(*list); i++ {
+		menuIds := make([]int, 0)
+		menulist := (*list)[i].SysMenu
+		for j := 0; j < len(*menulist); j++ {
+			menuIds = append(menuIds, (*menulist)[j].MenuId)
+		}
+		(*list)[i].MenuIds = menuIds
+	}
+
 	if err != nil {
 		e.Log.Errorf("db error:%s", err)
 		return err
@@ -70,7 +79,7 @@ func (e *SysRole) Insert(c *dto.SysRoleInsertReq, cb *casbin.SyncedEnforcer) err
 	c.SysMenu = dataMenu
 	c.Generate(&data)
 	tx := e.Orm
-	if config.DatabaseConfig.Driver != "sqlite3" {
+	if config.Cfg.Database.Driver != "sqlite3" {
 		tx := e.Orm.Begin()
 		defer func() {
 			if err != nil {
@@ -126,7 +135,7 @@ func (e *SysRole) Insert(c *dto.SysRoleInsertReq, cb *casbin.SyncedEnforcer) err
 func (e *SysRole) Update(c *dto.SysRoleUpdateReq, cb *casbin.SyncedEnforcer) error {
 	var err error
 	tx := e.Orm
-	if config.DatabaseConfig.Driver != "sqlite3" {
+	if config.Cfg.Database.Driver != "sqlite3" {
 		tx := e.Orm.Begin()
 		defer func() {
 			if err != nil {
@@ -187,7 +196,7 @@ func (e *SysRole) Update(c *dto.SysRoleUpdateReq, cb *casbin.SyncedEnforcer) err
 func (e *SysRole) Remove(c *dto.SysRoleDeleteReq, cb *casbin.SyncedEnforcer) error {
 	var err error
 	tx := e.Orm
-	if config.DatabaseConfig.Driver != "sqlite3" {
+	if config.Cfg.Database.Driver != "sqlite3" {
 		tx := e.Orm.Begin()
 		defer func() {
 			if err != nil {
@@ -199,8 +208,7 @@ func (e *SysRole) Remove(c *dto.SysRoleDeleteReq, cb *casbin.SyncedEnforcer) err
 	}
 	var model = models.SysRole{}
 	tx.Preload("SysMenu").Preload("SysDept").First(&model, c.GetId())
-	db := tx.Select(clause.Associations).Delete(&model)
-
+	db := tx.Select(clause.Associations).Where("role_id = ? ", c.GetId()).Unscoped().Delete(&model)
 	if err = db.Error; err != nil {
 		e.Log.Errorf("db error:%s", err)
 		return err
@@ -232,7 +240,7 @@ func (e *SysRole) GetRoleMenuId(roleId int) ([]int, error) {
 func (e *SysRole) UpdateDataScope(c *dto.RoleDataScopeReq) *SysRole {
 	var err error
 	tx := e.Orm
-	if config.DatabaseConfig.Driver != "sqlite3" {
+	if config.Cfg.Database.Driver != "sqlite3" {
 		tx := e.Orm.Begin()
 		defer func() {
 			if err != nil {
@@ -271,7 +279,7 @@ func (e *SysRole) UpdateDataScope(c *dto.RoleDataScopeReq) *SysRole {
 func (e *SysRole) UpdateStatus(c *dto.UpdateStatusReq) error {
 	var err error
 	tx := e.Orm
-	if config.DatabaseConfig.Driver != "sqlite3" {
+	if config.Cfg.Database.Driver != "sqlite3" {
 		tx := e.Orm.Begin()
 		defer func() {
 			if err != nil {

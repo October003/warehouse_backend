@@ -111,7 +111,7 @@ func (e *SysDept) Remove(d *dto.SysDeptDeleteReq) error {
 	var err error
 	var data models.SysDept
 
-	db := e.Orm.Model(&data).Delete(&data, d.GetId())
+	db := e.Orm.Model(&data).Unscoped().Delete(&data, d.GetId())
 	if err = db.Error; err != nil {
 		err = db.Error
 		e.Log.Errorf("Delete error: %s", err)

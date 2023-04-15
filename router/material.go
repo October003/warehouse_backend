@@ -17,7 +17,6 @@ func SysMaterialRouter(v1 *gin.RouterGroup, auth *jwt.GinJWTMiddleware) {
 	{
 		r.POST("/create", api.Create)
 		r.GET("/get", api.Query)
-		// ???runtime error: invalid memory address or nil pointer dereference
 		r.DELETE("/delete", api.Delete)
 		r.PUT("/update", api.Update)
 	}

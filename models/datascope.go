@@ -2,11 +2,11 @@ package models
 
 import (
 	"errors"
-	"github.com/go-admin-team/go-admin-core/sdk/config"
-	"github.com/go-admin-team/go-admin-core/sdk/pkg"
-	"gorm.io/gorm"
+	"warehouse/config"
 
 	log "github.com/go-admin-team/go-admin-core/logger"
+	"github.com/go-admin-team/go-admin-core/sdk/pkg"
+	"gorm.io/gorm"
 )
 
 type DataPermission struct {
@@ -18,7 +18,7 @@ type DataPermission struct {
 
 func (e *DataPermission) GetDataScope(tableName string, db *gorm.DB) (*gorm.DB, error) {
 
-	if !config.ApplicationConfig.EnableDP {
+	if !config.Cfg.Application.EnableDP {
 		usageStr := `数据权限已经为您` + pkg.Green(`关闭`) + `，如需开启请参考配置文件字段说明`
 		log.Debug("%s\n", usageStr)
 		return db, nil

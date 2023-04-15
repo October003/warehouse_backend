@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM golang:latest AS builder
 
 ENV GO111MODULE=on \
     GOPROXY=https://goproxy.cn,direct\
@@ -10,21 +10,14 @@ WORKDIR /build
 
 COPY . .
 
-RUN go build -o warehouse .
+RUN go build -ldflags "-s -w" -o backend .
 
-#FROM scratch
-#
-#COPY --from=builder /build/warehouse /
-#COPY --from=builder /build/config/settings.yml /
-WORKDIR /dist
+FROM scratch as runner
 
-RUN cp /build/warehouse .
+COPY --from=builder /build/backend /
+COPY --from=builder /build/config/settings.yml /config/
+COPY --from=builder /build/config/db.sql /config/
 
-EXPOSE 8888
+EXPOSE 8080
 
-ENTRYPOINT ["/dist/warehouse"]
-
-
-
-
-
+ENTRYPOINT ["/backend"]

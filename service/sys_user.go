@@ -44,17 +44,38 @@ func (e *SysUser) Insert(c *dto.SysUserInsertReq) error {
 func (e *SysUser) Remove(c *dto.SysUserById, p *actions.DataPermission) error {
 	var err error
 	var data models.SysUser
-
 	db := e.Orm.Model(&data).
 		Scopes(
 			actions.Permission(data.TableName(), p),
-		).Delete(&data, c.GetId())
+		).Unscoped().Delete(&data, c.GetId())
 	if err = db.Error; err != nil {
 		e.Log.Errorf("Error found in  RemoveSysUser : %s", err)
 		return err
 	}
 	if db.RowsAffected == 0 {
+		//e.Log.Errorf("id = %d", c.GetId())
 		return errors.New("无权删除该数据")
+	}
+	return nil
+}
+
+// Get 获取SysUser对象
+func (e *SysUser) Get(d *dto.SysUserById, p *actions.DataPermission, model *models.SysUser) error {
+	var data models.SysUser
+
+	err := e.Orm.Model(&data).Debug().
+		Scopes(
+			actions.Permission(data.TableName(), p),
+		).
+		First(model, d.GetId()).Error
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		err = errors.New("查看对象不存在或无权查看")
+		e.Log.Errorf("db error: %s", err)
+		return err
+	}
+	if err != nil {
+		e.Log.Errorf("db error: %s", err)
+		return err
 	}
 	return nil
 }
@@ -82,27 +103,6 @@ func (e *SysUser) Update(c *dto.SysUserUpdateReq, p *actions.DataPermission) err
 	if update.RowsAffected == 0 {
 		err = errors.New("update userinfo error")
 		log.Warnf("db update error")
-		return err
-	}
-	return nil
-}
-
-// Get 获取SysUser对象
-func (e *SysUser) Get(d *dto.SysUserById, p *actions.DataPermission, model *models.SysUser) error {
-	var data models.SysUser
-
-	err := e.Orm.Model(&data).Debug().
-		Scopes(
-			actions.Permission(data.TableName(), p),
-		).
-		First(model, d.GetId()).Error
-	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		err = errors.New("查看对象不存在或无权查看")
-		e.Log.Errorf("db error: %s", err)
-		return err
-	}
-	if err != nil {
-		e.Log.Errorf("db error: %s", err)
 		return err
 	}
 	return nil

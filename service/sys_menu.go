@@ -308,6 +308,9 @@ func menuCall(menuList *[]models.SysMenu, menu models.SysMenu) models.SysMenu {
 		if menu.MenuId != list[j].ParentId {
 			continue
 		}
+		if list[j].MenuId == 10 || list[j].MenuId == 6 {
+			continue
+		}
 		mi := models.SysMenu{}
 		mi.MenuId = list[j].MenuId
 		mi.MenuName = list[j].MenuName

@@ -6,16 +6,11 @@ import (
 	"io/ioutil"
 	"log"
 	"strings"
-	"warehouse/common/global"
 )
 
 func InitDb(db *gorm.DB) (err error) {
 	filePath := "config/db.sql"
 	err = ExecSql(db, filePath)
-	if global.Driver == "postgres" {
-		filePath = "config/pg.sql"
-		err = ExecSql(db, filePath)
-	}
 	return err
 }
 

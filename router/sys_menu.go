@@ -19,7 +19,6 @@ func registerSysMenuRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddle
 		r.GET("/get", api.GetPage)
 		r.GET("/get/:id", api.Get)
 		r.POST("/create", api.Insert)
-		//r.PUT("/:id", api.Update)
 		r.DELETE("/delete", api.Delete)
 	}
 

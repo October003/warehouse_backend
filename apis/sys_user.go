@@ -23,9 +23,6 @@ type SysUser struct {
 // @Accept  application/json
 // @Product application/json
 // @Param data body dto.SysUserInsertReq true "用户数据"
-// @Success 200 {object} response.Response "{"code": 200, "data": [...]}"
-// @Router /api/v1/sys-user [post]
-// @Security Bearer
 func (e SysUser) Insert(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.SysUserInsertReq{}
@@ -53,18 +50,44 @@ func (e SysUser) Insert(c *gin.Context) {
 
 // Delete
 // @Summary 删除用户数据
-// @Description 删除数据
-// @Tags 用户
 // @Param userId path int true "userId"
 // @Success 200 {object} response.Response "{"code": 200, "data": [...]}"
-// @Router /api/v1/sys-user/{userId} [delete]
-// @Security Bearer
 func (e SysUser) Delete(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.SysUserById{}
 	err := e.MakeContext(c).
 		MakeOrm().
-		Bind(&req, binding.JSON).
+		Bind(&req, nil).
+		MakeService(&s.Service).Errors
+	if err != nil {
+		e.Logger.Error(err)
+		e.Error(500, err, err.Error())
+		return
+	}
+	// 设置编辑人
+	req.SetUpdateBy(user.GetUserId(c))
+	// 数据权限检查
+	p := actions.GetPermissionFromContext(c)
+	err = s.Remove(&req, p)
+	if err != nil {
+		e.Logger.Error(err)
+		return
+	}
+	e.OK(req.GetId(), "删除成功")
+}
+
+// Get
+// @Summary 获取用户
+// @Description 获取JSON
+// @Tags 用户
+// @Param userId path int true "用户编码"
+// @Success 200 {object} response.Response "{"code": 200, "data": [...]}"
+func (e SysUser) Get(c *gin.Context) {
+	s := service.SysUser{}
+	req := dto.SysUserById{}
+	err := e.MakeContext(c).
+		MakeOrm().
+		Bind(&req, nil).
 		MakeService(&s.Service).
 		Errors
 	if err != nil {
@@ -72,19 +95,15 @@ func (e SysUser) Delete(c *gin.Context) {
 		e.Error(500, err, err.Error())
 		return
 	}
-
-	// 设置编辑人
-	req.SetUpdateBy(user.GetUserId(c))
-
-	// 数据权限检查
+	var object models.SysUser
+	//数据权限检查
 	p := actions.GetPermissionFromContext(c)
-
-	err = s.Remove(&req, p)
+	err = s.Get(&req, p, &object)
 	if err != nil {
-		e.Logger.Error(err)
+		e.Error(http.StatusUnprocessableEntity, err, "查询失败")
 		return
 	}
-	e.OK(req.GetId(), "删除成功")
+	e.OK(object, "查询成功")
 }
 
 // Update
@@ -95,8 +114,6 @@ func (e SysUser) Delete(c *gin.Context) {
 // @Product application/json
 // @Param data body dto.SysUserUpdateReq true "body"
 // @Success 200 {object} response.Response "{"code": 200, "data": [...]}"
-// @Router /api/v1/sys-user/{userId} [put]
-// @Security Bearer
 func (e SysUser) Update(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.SysUserUpdateReq{}
@@ -124,37 +141,6 @@ func (e SysUser) Update(c *gin.Context) {
 	e.OK(req.GetId(), "更新成功")
 }
 
-// Get
-// @Summary 获取用户
-// @Description 获取JSON
-// @Tags 用户
-// @Param userId path int true "用户编码"
-// @Success 200 {object} response.Response "{"code": 200, "data": [...]}"
-// @Router /api/v1/sys-user/{userId} [get]
-// @Security Bearer
-func (e SysUser) Get(c *gin.Context) {
-	s := service.SysUser{}
-	req := dto.SysUserById{}
-	err := e.MakeContext(c).
-		MakeOrm().
-		Bind(&req, nil).
-		MakeService(&s.Service).
-		Errors
-	if err != nil {
-		e.Logger.Error(err)
-		e.Error(500, err, err.Error())
-		return
-	}
-	var object models.SysUser
-	//数据权限检查
-	p := actions.GetPermissionFromContext(c)
-	err = s.Get(&req, p, &object)
-	if err != nil {
-		e.Error(http.StatusUnprocessableEntity, err, "查询失败")
-		return
-	}
-	e.OK(object, "查询成功")
-}
 func (e SysUser) GetPage(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.SysUserGetPageReq{}
@@ -170,6 +156,7 @@ func (e SysUser) GetPage(c *gin.Context) {
 	}
 	//数据权限检查
 	p := actions.GetPermissionFromContext(c)
+
 	list := make([]models.SysUser, 0)
 	var count int64
 	err = s.GetPage(&req, p, &list, &count)
@@ -182,14 +169,6 @@ func (e SysUser) GetPage(c *gin.Context) {
 
 // ResetPwd 重置用户密码
 // @Summary 重置用户密码
-// @Description 获取JSON
-// @Tags 用户
-// @Accept  application/json
-// @Product application/json
-// @Param data body dto.ResetSysUserPwdReq true "body"
-// @Success 200 {object} response.Response "{"code": 200, "data": [...]}"
-// @Router /api/v1/user/pwd/reset [put]
-// @Security Bearer
 func (e SysUser) ResetPwd(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.ResetSysUserPwdReq{}

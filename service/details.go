@@ -95,7 +95,7 @@ func (o *Outbound) CreateOutbound(data *models.Details) error {
 func (i *Inbound) QueryAllInbound(datalist *[]dto.DetailQueryReq) ([]dto.DetailQueryReq, error) {
 	//根据 QueryReq 中的字段  去 inbound_detail_sql 和 material_sql  表中查询 material_id 相等的字段
 	i.Orm.Model(&models.InboundDetailSql{}).
-		Select("inbound_detail_sql.*,material_sql.material_id,material_sql.material_name,material_sql.specification,material_sql.unit,material_sql.storage_location").
+		Select("inbound_detail_sqls.*,material_sql.material_id,material_sql.material_name,material_sql.specification,material_sql.unit,material_sql.storage_location").
 		Joins("JOIN material_sql ON inbound_detail_sql.material_id = material_sql.material_id").Scan(datalist)
 	return *datalist, nil
 }
@@ -103,7 +103,7 @@ func (i *Inbound) QueryAllInbound(datalist *[]dto.DetailQueryReq) ([]dto.DetailQ
 func (o *Outbound) QueryAllOutbound(datalist *[]dto.DetailQueryReq) ([]dto.DetailQueryReq, error) {
 	//根据 QueryReq 中的字段  去 outbound_detail_sql 和 material_sql  表中查询 material_id 相等的字段
 	o.Orm.Model(&models.OutboundDetailSql{}).
-		Select("outbound_detail_sql.*,material_sql.material_id,material_sql.material_name,material_sql.specification,material_sql.unit,material_sql.storage_location").
+		Select("outbound_detail_sqls.*,material_sql.material_id,material_sql.material_name,material_sql.specification,material_sql.unit,material_sql.storage_location").
 		Joins("JOIN material_sql ON outbound_detail_sql.material_id = material_sql.material_id").Scan(datalist)
 	return *datalist, nil
 }

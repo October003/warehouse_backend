@@ -1,41 +1,72 @@
 package config
 
 import (
-	"encoding/json"
-	"fmt"
-	"github.com/go-admin-team/go-admin-core/config/source/file"
-	"github.com/go-admin-team/go-admin-core/sdk/config"
-	"warehouse/common/database"
+	log "github.com/go-admin-team/go-admin-core/logger"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 )
 
-func Init() {
-	// 配置数据库 -- 初始化数据库
-	config.Setup(
-		file.NewSource(file.WithPath("config/settings.yml")),
-		database.Setup,
-	)
+type Application struct {
+	ReadTimeout   int    `yaml:"read_timeout"`
+	WriterTimeout int    `yaml:"writer_timeout"`
+	Host          string `yaml:"host"`
+	Port          int64  `yaml:"port"`
+	Name          string `yaml:"name"`
+	JwtSecret     string `yaml:"jwt_secret"`
+	Mode          string `yaml:"Mode"`
+	DemoMsg       string `yaml:"DemoMsg"`
+	EnableDP      bool   `yaml:"enable_dp"`
+}
+type Database struct {
+	Driver          string `yaml:"driver"`
+	Source          string `yaml:"source"`
+	ConnMaxIdleTime int    `yaml:"conn_max_idle_time"`
+	ConnMaxLifeTime int    `yaml:"conn_max_life_time"`
+	MaxIdleConns    int    `yaml:"max_idle_conns"`
+	MaxOpenConns    int    `yaml:"max_open_conns"`
+}
+type Jwt struct {
+	Secret  string `yaml:"secret"`
+	Timeout int64  `yaml:"timeout"`
+}
 
-	application, errs := json.MarshalIndent(config.ApplicationConfig, "", "   ") //转换成JSON返回的是byte[]
-	if errs != nil {
-		fmt.Println(errs.Error())
-		fmt.Println("application:", string(application))
-	}
+type Logger struct {
+	Type      string `yaml:"type"`
+	Path      string `yaml:"path"`
+	Level     string `yaml:"level"`
+	Stdout    string `yaml:"stdout"`
+	EnabledDB bool   `yaml:"enabled_db"`
+	Cap       uint   `yaml:"cap"`
+}
+type Config struct {
+	Application Application `yaml:"application"`
+	Database    Database    `yaml:"database"`
+	Jwt         Jwt         `yaml:"jwt"`
+	Logger      Logger      `yaml:"logger"`
+}
 
-	jwt, errs := json.MarshalIndent(config.JwtConfig, "", "   ") //转换成JSON返回的是byte[]
-	if errs != nil {
-		fmt.Println(errs.Error())
-		fmt.Println("jwt:", string(jwt))
-	}
-	fmt.Println("jwt:", string(jwt))
-	database, errs := json.MarshalIndent(config.DatabasesConfig, "", "   ") //转换成JSON返回的是byte[]
-	if errs != nil {
-		fmt.Println(errs.Error())
-		fmt.Println("database:", string(database))
-	}
+var Cfg *Config
 
-	loggerConfig, errs := json.MarshalIndent(config.LoggerConfig, "", "   ") //转换成JSON返回的是byte[]
-	if errs != nil {
-		fmt.Println(errs.Error())
-		fmt.Println("logger:", string(loggerConfig))
+func Init() (err error) {
+	// 1. 读取配置文件内容并解析为 Config 对象
+	Cfg, err = loadConfig("config/settings.yml")
+	if err != nil {
+		log.Fatal("loadConfig() failed")
+		return err
 	}
+	return nil
+}
+
+func loadConfig(filename string) (*Config, error) {
+	configFile, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Fatal("ioutil.ReadFile() failed ")
+		return nil, err
+	}
+	var config Config
+	err = yaml.Unmarshal(configFile, &config)
+	if err != nil {
+		return nil, err
+	}
+	return &config, nil
 }

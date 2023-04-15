@@ -21,18 +21,23 @@ func (e Admin) Add(c *gin.Context) {
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
+		return
 	}
 	if err := s.Add(inboundPersons, 1); err != nil {
 		e.Error(500, err, err.Error())
+		return
 	}
 	if err := s.Add(outboundPersons, 2); err != nil {
 		e.Error(500, err, err.Error())
+		return
 	}
 	if err := s.Add(units, 3); err != nil {
 		e.Error(500, err, err.Error())
+		return
 	}
 	if err := s.Add(storageLocations, 4); err != nil {
 		e.Error(500, err, err.Error())
+		return
 	}
 	config, err := s.GetAll()
 	if err != nil {
@@ -58,15 +63,19 @@ func (e Admin) Delete(c *gin.Context) {
 	}
 	if err := s.Delete(inboundPersons, 1); err != nil {
 		e.Error(500, err, err.Error())
+		return
 	}
 	if err := s.Delete(outboundPersons, 2); err != nil {
 		e.Error(500, err, err.Error())
+		return
 	}
 	if err := s.Delete(units, 3); err != nil {
 		e.Error(500, err, err.Error())
+		return
 	}
 	if err := s.Delete(storageLocations, 4); err != nil {
 		e.Error(500, err, err.Error())
+		return
 	}
 	config, err := s.GetAll()
 	if err != nil {

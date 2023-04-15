@@ -1,34 +1,28 @@
-settings:
-  application:
-    # dev开发环境 test测试环境 prod线上环境
-    mode: dev
-    # 服务器ip，默认使用 0.0.0.0
-    host: 0.0.0.0
-    # 服务名称
-    name: management
-    # 端口号
-    port: 8080 # 服务端口号
-    readtimeout: 1
-    writertimeout: 2
-    # 数据权限功能开关
-    enabledp: true
-  logger:
-    # 日志存放路径
-    path: temp/logs
-    # 日志输出，file：文件，default：命令行，其他：命令行
-    stdout: '' #控制台日志，启用后，不输出到文件
-    # 日志等级, trace, debug, info, warn, error, fatal
-    level: trace
-    # 数据库日志开关
-    enableddb: false
-  jwt:
-    # token 密钥，生产环境时及的修改
-    secret: go-admin
-    # token 过期时间 单位：秒
-    timeout: 86400
-  database:
-    # 数据库类型 mysql, sqlite3, postgres, sqlserver
-    # sqlserver: sqlserver://用户名:密码@地址?database=数据库名
-    driver: mysql
-    # 数据库连接字符串 mysql 缺省信息 charset=utf8&parseTime=True&loc=Local&timeout=1000ms
-    source: root:103003@tcp(127.0.0.1:3306)/management?charset=utf8&parseTime=True&loc=Local&timeout=1000ms
+application:
+  # dev开发环境 test测试环境 prod线上环境
+  mode: prod
+  host: 0.0.0.0
+  name: management
+  port: 8080 # 服务端口号
+  read_timeout: 1
+  writer_timeout: 2
+  # 数据权限功能开关
+  enable_dp: true
+logger:
+  # 日志存放路径
+  path: temp/logs
+  # 日志输出，file：文件，default：命令行，其他：命令行
+  stdout: '' #控制台日志，启用后，不输出到文件
+  # 日志等级, trace, debug, info, warn, error, fatal
+  level: debug
+  # 数据库日志开关
+  enabled_db: false
+jwt:
+  secret: go-admin
+  timeout: 43200
+database:
+  driver: mysql
+  source: root:103003@tcp(127.0.0.1:3306)/management?charset=utf8&parseTime=True&loc=Local
+  max_idle_conns: 50
+  max_open_conns: 200
+  # &timeout=1000ms

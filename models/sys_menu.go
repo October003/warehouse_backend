@@ -3,16 +3,16 @@ package models
 import "warehouse/common/models"
 
 type SysMenu struct {
-	MenuId     int       `json:"menuId" gorm:"primaryKey;autoIncrement"`
-	MenuName   string    `json:"menuName" gorm:"size:128;"`
-	Title      string    `json:"title" gorm:"size:128;"`
+	MenuId     int       `json:"menuId" gorm:"primaryKey;autoIncrement"` // 菜单ID
+	MenuName   string    `json:"menuName" gorm:"size:128;"`              // 菜单名称
+	Title      string    `json:"title" gorm:"size:128;"`                 // 菜单标题
 	Icon       string    `json:"icon" gorm:"size:128;"`
-	Path       string    `json:"path" gorm:"size:128;"`
+	Path       string    `json:"path" gorm:"size:128;"` // 菜单路径
 	Paths      string    `json:"paths" gorm:"size:128;"`
-	MenuType   string    `json:"menuType" gorm:"size:1;"`
-	Action     string    `json:"action" gorm:"size:16;"`
-	Permission string    `json:"permission" gorm:"size:255;"`
-	ParentId   int       `json:"parentId" gorm:"size:11;"`
+	MenuType   string    `json:"menuType" gorm:"size:1;"`     // 菜单类型
+	Action     string    `json:"action" gorm:"size:16;"`      //请求方式
+	Permission string    `json:"permission" gorm:"size:255;"` //权限
+	ParentId   int       `json:"parentId" gorm:"size:11;"`    //
 	NoCache    bool      `json:"noCache" gorm:"size:8;"`
 	Breadcrumb string    `json:"breadcrumb" gorm:"size:255;"`
 	Component  string    `json:"component" gorm:"size:255;"`

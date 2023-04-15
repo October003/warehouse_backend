@@ -1,35 +1,24 @@
 version: '3'
-
 services:
   mysql:
-    image: mysql:8.0
-    command: --default-authentication-plugin=mysql_native_password
+    platform: linux/x86_64
+    image: mysql:5.7
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
     environment:
-      MYSQL_DATABASE: mydb
-      MYSQL_USER: root
-      MYSQL_PASSWORD: mypassword
-      MYSQL_ROOT_PASSWORD: myrootpassword
-    volumes:
-      - ./mysql/data:/var/lib/mysql
+      MYSQL_DATABASE: management
+      MYSQL_ROOT_PASSWORD: password
     ports:
-      - "3306:3306"
-    networks:
-      - mynet
-
-  web:
-    build: .
-    ports:
-      - "8080:8080"
+      - "0.0.0.0:3306:3306"
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    links:
+     - mysql:mysql
     depends_on:
       - mysql
-    environment:
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_NAME: mydb
-      DB_USER: root
-      DB_PASSWORD: mypassword
-    networks:
-      - mynet
-
-networks:
-  mynet:
+    ports:
+      - "0.0.0.0:8080:8080"

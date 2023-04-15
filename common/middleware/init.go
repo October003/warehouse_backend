@@ -18,7 +18,8 @@ func InitMiddleware(r *gin.Engine) {
 	r.Use(WithContextDb)
 	// 跨越处理
 	r.Use(Cors)
-
+	// 日志处理
+	r.Use(LoggerToFile())
 	sdk.Runtime.SetMiddleware(JwtTokenCheck, (*jwt.GinJWTMiddleware).MiddlewareFunc)
 	sdk.Runtime.SetMiddleware(RoleCheck, AuthCheckRole())
 	sdk.Runtime.SetMiddleware(PermissionCheck, actions.PermissionAction())

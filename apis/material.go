@@ -23,6 +23,7 @@ func (e Material) Create(c *gin.Context) {
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
+		return
 	}
 	if err := s.Create(&req); err != nil {
 		e.Logger.Error(err)

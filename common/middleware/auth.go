@@ -4,24 +4,23 @@ import (
 	"time"
 	"warehouse/common/middleware/handler"
 
-	"github.com/go-admin-team/go-admin-core/sdk/config"
 	jwt "github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth"
+	"warehouse/config"
 )
 
 // AuthInit jwt验证new
 func AuthInit() (*jwt.GinJWTMiddleware, error) {
 	timeout := time.Hour
-	if config.ApplicationConfig.Mode == "dev" {
+	if config.Cfg.Application.Mode == "dev" {
 		timeout = time.Duration(876010) * time.Hour
 	} else {
-		if config.JwtConfig.Timeout != 0 {
-			timeout = time.Duration(config.JwtConfig.Timeout) * time.Second
+		if config.Cfg.Jwt.Timeout != 0 {
+			timeout = time.Duration(config.Cfg.Jwt.Timeout) * time.Second
 		}
 	}
-
 	return jwt.New(&jwt.GinJWTMiddleware{
 		Realm:           "test zone",
-		Key:             []byte(config.JwtConfig.Secret),
+		Key:             []byte(config.Cfg.Jwt.Secret),
 		Timeout:         timeout,
 		MaxRefresh:      time.Hour,
 		PayloadFunc:     handler.PayloadFunc, //负载

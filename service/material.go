@@ -18,14 +18,7 @@ func (m *MaterialSql) Create(req *models.MaterialSql) error {
 	return nil
 }
 
-//  ?????? 好多问题要处理
-
 func (m *MaterialSql) DeleteMaterialDetailById(id string) error {
-	//var data models.MaterialSql
-	//if err := m.Orm.Where("material_id = ?", id).First(&data).Error; err != nil {
-	//	m.Log.Errorf("query material failed,db err:%s", err)
-	//	return err
-	//}
 	if err := m.Orm.Where("material_id = ?", id).Unscoped().Delete(&models.MaterialSql{}).Error; err != nil {
 		m.Log.Errorf("delete material failed,db err:%s", err)
 		return err
