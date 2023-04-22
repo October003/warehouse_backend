@@ -1,20 +1,22 @@
 package models
 
+import "gorm.io/gorm"
+
 type Config struct {
+	gorm.Model
 	Name string `json:"name" gorm:"name;unique"`
-	ModelTime
 }
 
-type InBoundPerson Config
-type OutBoundPerson Config
-type Unit Config
-type StorageLocation Config
-type MaterialID Config
+type InBoundPersons Config
+type OutBoundPersons Config
+type Units Config
+type StrongLocation Config
+type ItemIDs Config
 
 type AdminConfig struct {
-	InBoundPersons  []InBoundPerson   `json:"inbound_persons"`  //入库人
-	OutBoundPersons []OutBoundPerson  `json:"outbound_persons"` //出库人
-	Units           []Unit            `json:"units"`            //计量单位
-	StorageLocation []StorageLocation `json:"strong_locations"` //库位
-	MaterialIds     []MaterialID      `json:"item_ids"`         //物料编号
+	InBoundPersons  []InBoundPersons  `json:"inbound_persons"`
+	OutBoundPersons []OutBoundPersons `json:"outbound_persons"`
+	Units           []Units           `json:"units"`
+	StrongLocation  []StrongLocation  `json:"strong_locations"`
+	ItemIDs         []ItemIDs         `json:"item_ids"`
 }

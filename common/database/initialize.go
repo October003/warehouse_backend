@@ -35,14 +35,14 @@ func Setup() (err error) {
 	sdk.Runtime.SetDb(host, DB)
 	sdk.Runtime.SetCasbin(host, e)
 	err = DB.Migrator().AutoMigrate(
-		&models.MaterialSql{},
-		&models.InboundDetailSql{},
-		&models.OutboundDetailSql{},
-		&models.InBoundPerson{},
-		&models.OutBoundPerson{},
-		&models.Unit{},
-		&models.StorageLocation{},
-		&models.MaterialID{},
+		&models.ItemSql{},
+		&models.InboundSql{},
+		&models.OutboundSql{},
+		&models.InBoundPersons{},
+		&models.OutBoundPersons{},
+		&models.Units{},
+		&models.StrongLocation{},
+		&models.ItemIDs{},
 		&models2.SysDept{},
 		&models2.SysMenu{},
 		&models2.SysRoleDept{},

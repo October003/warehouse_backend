@@ -6,44 +6,50 @@ import (
 	"warehouse/models"
 )
 
-type MaterialSql struct {
+type ItemSql struct {
 	service.Service
 }
 
-func (m *MaterialSql) Create(req *models.MaterialSql) error {
-	if err := m.Orm.Create(req).Error; err != nil {
-		m.Log.Errorf("Create failed , db err :%s", err)
-		return err
-	}
-	return nil
-}
-
-func (m *MaterialSql) DeleteMaterialDetailById(id string) error {
-	if err := m.Orm.Where("material_id = ?", id).Unscoped().Delete(&models.MaterialSql{}).Error; err != nil {
-		m.Log.Errorf("delete material failed,db err:%s", err)
-		return err
-	}
-	return nil
-}
-
-func (m *MaterialSql) Update(data *models.Material) error {
-	return m.Orm.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Where("material_id = ?", data.MaterialID).
-			Updates(&models.MaterialSql{
-				Material: *data,
-			}).Error; err != nil {
-			m.Log.Errorf("updates failed,db err:%s", err)
+func (i *ItemSql) CreateItemAndItemID(req *models.Item) error {
+	return i.Orm.Transaction(func(tx *gorm.DB) error {
+		if err := i.Orm.Create(&models.ItemSql{Item: *req}).Error; err != nil {
 			return err
 		}
-		return nil
+		return i.Orm.Create(&models.ItemIDs{Name: req.ItemID}).Error
 	})
 }
 
-func (m *MaterialSql) Query(datalist *[]models.MaterialSql) (*[]models.MaterialSql, error) {
-	err := m.Orm.Find(datalist).Limit(-1).Offset(-1).Error
-	if err != nil {
-		m.Log.Errorf("material query failed,db err:%s", err)
-		return nil, err
+func (i *ItemSql) DeleteItemAndDetailsByID(id string) error {
+	return i.Orm.Transaction(func(tx *gorm.DB) error {
+		var itemSql models.ItemSql
+		if err := tx.Where("id = ?", id).First(&itemSql).Error; err != nil {
+			return err
+		}
+		if err := tx.Where("item_id = ?", itemSql.ItemID).Unscoped().Delete(&models.InboundSql{}).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Where("item_id = ?", itemSql.ItemID).Unscoped().Delete(&models.OutboundSql{}).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Where("id = ?", id).Unscoped().Delete(&models.ItemSql{}).Error; err != nil {
+			return err
+		}
+		return tx.Where("name = ?", itemSql.ItemID).Unscoped().Delete(&models.ItemIDs{}).Error
+	})
+}
+
+func (i *ItemSql) Update(newItem *models.Item) error {
+	return i.Orm.Transaction(func(tx *gorm.DB) error {
+		return tx.Where("item_id = ?", newItem.ItemID).Updates(&models.ItemSql{Item: *newItem}).Error
+	})
+}
+
+func (i *ItemSql) QueryAll() ([]models.ItemSql, error) {
+	var itemSqls []models.ItemSql
+	if err := i.Orm.Find(&itemSqls).Error; err != nil {
+		return itemSqls, err
 	}
-	return datalist, nil
+	return itemSqls, nil
 }

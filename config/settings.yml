@@ -9,20 +9,16 @@ application:
   # 数据权限功能开关
   enable_dp: true
 logger:
-  # 日志存放路径
   path: temp/logs
-  # 日志输出，file：文件，default：命令行，其他：命令行
   stdout: '' #控制台日志，启用后，不输出到文件
-  # 日志等级, trace, debug, info, warn, error, fatal
   level: debug
-  # 数据库日志开关
   enabled_db: false
 jwt:
   secret: go-admin
-  timeout: 43200
+  timeout: 86400
 database:
   driver: mysql
+  #source: root:password@tcp(mysql:3306)/management?charset=utf8&parseTime=True&loc=Local
   source: root:103003@tcp(127.0.0.1:3306)/management?charset=utf8&parseTime=True&loc=Local
   max_idle_conns: 50
   max_open_conns: 200
-  # &timeout=1000ms

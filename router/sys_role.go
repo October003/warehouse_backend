@@ -23,7 +23,6 @@ func SysRoleRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
 	}
 	r1 := v1.Group("").Use(authMiddleware.MiddlewareFunc())
 	{
-		//r1.PUT("/role-status", api.Update2Status)
 		r1.PUT("/roledatascope", api.Update2DataScope)
 	}
 }

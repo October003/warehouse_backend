@@ -49,7 +49,10 @@ func (e Details) QueryInbound(c *gin.Context) {
 		e.Error(500, err, err.Error())
 		return
 	}
-	e.OK(datalist, "查询成功")
+	c.JSON(http.StatusOK, &gin.H{
+		"details": datalist,
+		"msg":     "查询成功",
+	})
 }
 
 // 删除入库记录
@@ -106,7 +109,10 @@ func (e Details) QueryOutbound(c *gin.Context) {
 		e.Error(500, err, err.Error())
 		return
 	}
-	e.OK(datalist, "查询成功")
+	c.JSON(http.StatusOK, &gin.H{
+		"details": datalist,
+		"msg":     "查询成功",
+	})
 }
 
 // 删除出库记录
@@ -139,7 +145,7 @@ func (e Details) QueryByTimestamp(c *gin.Context) {
 		e.Error(500, err, err.Error())
 		return
 	}
-	inboundDetails, outboundDetails, err := s.QueryByTime(start, end)
+	inboundDetails, outboundDetails, err := s.QueryByTimestamp(start, end)
 	if err != nil {
 		e.Logger.Errorf("s.QueryByTime() failed,err:%s", err)
 		e.Error(500, err, err.Error())

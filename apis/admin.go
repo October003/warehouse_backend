@@ -3,6 +3,7 @@ package apis
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-admin-team/go-admin-core/sdk/api"
+	"net/http"
 	"warehouse/service"
 )
 
@@ -45,7 +46,10 @@ func (e Admin) Add(c *gin.Context) {
 		e.Error(500, err, err.Error())
 		return
 	}
-	e.OK(config, "添加系统设置成功")
+	c.JSON(http.StatusOK, &gin.H{
+		"config": config,
+		"msg":    "添加系统设置成功",
+	})
 }
 
 // 删除系统设置
@@ -82,7 +86,10 @@ func (e Admin) Delete(c *gin.Context) {
 		e.Error(500, err, err.Error())
 		return
 	}
-	e.OK(config, "删除系统设置成功")
+	c.JSON(http.StatusOK, &gin.H{
+		"config": config,
+		"msg":    "删除系统设置成功",
+	})
 }
 
 // 获取系统配置
@@ -99,5 +106,8 @@ func (e Admin) Get(c *gin.Context) {
 		e.Error(500, err, err.Error())
 		return
 	}
-	e.OK(config, "获取系统设置成功")
+	c.JSON(http.StatusOK, &gin.H{
+		"config": config,
+		"msg":    "获取系统设置成功",
+	})
 }

@@ -15,19 +15,19 @@ func (a *Admin) Add(name string, num int) error {
 	}
 	switch num {
 	case 1:
-		if err := a.Orm.Create(&models.InBoundPerson{Name: name}).Error; err != nil {
+		if err := a.Orm.Create(&models.InBoundPersons{Name: name}).Error; err != nil {
 			return err
 		}
 	case 2:
-		if err := a.Orm.Create(&models.OutBoundPerson{Name: name}).Error; err != nil {
+		if err := a.Orm.Create(&models.OutBoundPersons{Name: name}).Error; err != nil {
 			return err
 		}
 	case 3:
-		if err := a.Orm.Create(&models.Unit{Name: name}).Error; err != nil {
+		if err := a.Orm.Create(&models.Units{Name: name}).Error; err != nil {
 			return err
 		}
 	case 4:
-		if err := a.Orm.Create(&models.StorageLocation{Name: name}).Error; err != nil {
+		if err := a.Orm.Create(&models.StrongLocation{Name: name}).Error; err != nil {
 			return err
 		}
 	}
@@ -36,11 +36,11 @@ func (a *Admin) Add(name string, num int) error {
 
 func (a *Admin) GetAll() (*models.AdminConfig, error) {
 	var (
-		inboundPersons   []models.InBoundPerson
-		outboundPersons  []models.OutBoundPerson
-		units            []models.Unit
-		storageLocations []models.StorageLocation
-		materialIds      []models.MaterialID
+		inboundPersons   []models.InBoundPersons
+		outboundPersons  []models.OutBoundPersons
+		units            []models.Units
+		storageLocations []models.StrongLocation
+		ItemIDs          []models.ItemIDs
 		config           models.AdminConfig
 	)
 	if err := a.Orm.Find(&inboundPersons).Error; err != nil {
@@ -58,30 +58,30 @@ func (a *Admin) GetAll() (*models.AdminConfig, error) {
 	if err := a.Orm.Find(&storageLocations).Error; err != nil {
 		return nil, err
 	}
-	config.StorageLocation = storageLocations
-	if err := a.Orm.Find(&materialIds).Error; err != nil {
+	config.StrongLocation = storageLocations
+	if err := a.Orm.Find(&ItemIDs).Error; err != nil {
 		return nil, err
 	}
-	config.MaterialIds = materialIds
+	config.ItemIDs = ItemIDs
 	return &config, nil
 }
 
 func (a *Admin) Delete(name string, num int) error {
 	switch num {
 	case 1:
-		if err := a.Orm.Where("Name = ?", name).Unscoped().Delete(&models.InBoundPerson{}).Error; err != nil {
+		if err := a.Orm.Where("Name = ?", name).Unscoped().Delete(&models.InBoundPersons{}).Error; err != nil {
 			return err
 		}
 	case 2:
-		if err := a.Orm.Where("Name = ?", name).Unscoped().Delete(&models.OutBoundPerson{}).Error; err != nil {
+		if err := a.Orm.Where("Name = ?", name).Unscoped().Delete(&models.OutBoundPersons{}).Error; err != nil {
 			return err
 		}
 	case 3:
-		if err := a.Orm.Where("Name = ?", name).Unscoped().Delete(&models.Unit{}).Error; err != nil {
+		if err := a.Orm.Where("Name = ?", name).Unscoped().Delete(&models.Units{}).Error; err != nil {
 			return err
 		}
 	case 4:
-		if err := a.Orm.Where("Name = ?", name).Unscoped().Delete(&models.StorageLocation{}).Error; err != nil {
+		if err := a.Orm.Where("Name = ?", name).Unscoped().Delete(&models.StrongLocation{}).Error; err != nil {
 			return err
 		}
 	}
