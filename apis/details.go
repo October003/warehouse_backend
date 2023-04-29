@@ -138,7 +138,6 @@ func (e Details) QueryByTimestamp(c *gin.Context) {
 	start := c.Query("start")
 	end := c.Query("end")
 	s := service.QueryByTime{}
-	//req := dto.DetailQueryReq{}
 	err := e.MakeContext(c).MakeOrm().MakeService(&s.Service).Errors
 	if err != nil {
 		e.Logger.Error(err)
@@ -151,9 +150,7 @@ func (e Details) QueryByTimestamp(c *gin.Context) {
 		e.Error(500, err, err.Error())
 		return
 	}
-	//datalist := [][]dto.DetailQueryReq{inboundDetails, outboundDetails}
-	//e.OK(datalist, "查询成功")
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusOK, &gin.H{
 		"msg":      "查询成功",
 		"inbound":  inboundDetails,
 		"outbound": outboundDetails,

@@ -53,7 +53,6 @@ func (e *SysUser) Remove(c *dto.SysUserById, p *actions.DataPermission) error {
 		return err
 	}
 	if db.RowsAffected == 0 {
-		//e.Log.Errorf("id = %d", c.GetId())
 		return errors.New("无权删除该数据")
 	}
 	return nil

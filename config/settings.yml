@@ -18,7 +18,7 @@ jwt:
   timeout: 86400
 database:
   driver: mysql
-  #source: root:password@tcp(mysql:3306)/management?charset=utf8&parseTime=True&loc=Local
-  source: root:103003@tcp(127.0.0.1:3306)/management?charset=utf8&parseTime=True&loc=Local
+  source: root:password@tcp(mysql:3306)/management?charset=utf8&parseTime=True&loc=Local
+  #source: root:103003@tcp(127.0.0.1:3306)/management?charset=utf8&parseTime=True&loc=Local
   max_idle_conns: 50
   max_open_conns: 200

@@ -18,7 +18,7 @@ var (
 func Init() (err error) {
 	r := gin.Default()
 	//gin.SetMode(gin.TestMode)
-	//gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(gin.ReleaseMode)
 	//初始化 路由 中间件
 	middleware.InitMiddleware(r)
 	auth, err := middleware.AuthInit()

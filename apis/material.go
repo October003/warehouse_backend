@@ -17,10 +17,7 @@ type Material struct {
 func (e Material) Create(c *gin.Context) {
 	s := service.ItemSql{}
 	req := models.Item{}
-	err := e.MakeContext(c).
-		MakeOrm().
-		Bind(&req, binding.JSON).
-		MakeService(&s.Service).Errors
+	err := e.MakeContext(c).MakeOrm().Bind(&req, binding.JSON).MakeService(&s.Service).Errors
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
@@ -37,17 +34,14 @@ func (e Material) Create(c *gin.Context) {
 // 获取物料信息
 func (e Material) Query(c *gin.Context) {
 	s := service.ItemSql{}
-	err := e.MakeContext(c).
-		MakeOrm().
-		MakeService(&s.Service).Errors
+	err := e.MakeContext(c).MakeOrm().MakeService(&s.Service).Errors
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
 		return
 	}
 	var list []models.ItemSql
-	list, err = s.QueryAll()
-	if err != nil {
+	if list, err = s.QueryAll(); err != nil {
 		e.Logger.Errorf("s.Query() failed,db err:%s", err)
 		e.Error(500, err, "查询失败")
 		return
@@ -62,10 +56,7 @@ func (e Material) Query(c *gin.Context) {
 func (e Material) Update(c *gin.Context) {
 	s := service.ItemSql{}
 	req := models.Item{}
-	err := e.MakeContext(c).
-		MakeOrm().
-		Bind(&req, binding.JSON).
-		MakeService(&s.Service).Errors
+	err := e.MakeContext(c).MakeOrm().Bind(&req, binding.JSON).MakeService(&s.Service).Errors
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
@@ -83,9 +74,7 @@ func (e Material) Update(c *gin.Context) {
 func (e Material) Delete(c *gin.Context) {
 	id := c.Query("id")
 	s := service.ItemSql{}
-	err := e.MakeContext(c).
-		MakeOrm().
-		MakeService(&s.Service).Errors
+	err := e.MakeContext(c).MakeOrm().MakeService(&s.Service).Errors
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())

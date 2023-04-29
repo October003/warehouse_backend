@@ -18,19 +18,10 @@ type SysUser struct {
 
 // Insert
 // @Summary 创建用户
-// @Description 获取JSON
-// @Tags 用户
-// @Accept  application/json
-// @Product application/json
-// @Param data body dto.SysUserInsertReq true "用户数据"
 func (e SysUser) Insert(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.SysUserInsertReq{}
-	err := e.MakeContext(c).
-		MakeOrm().
-		Bind(&req, binding.JSON).
-		MakeService(&s.Service).
-		Errors
+	err := e.MakeContext(c).MakeOrm().Bind(&req, binding.JSON).MakeService(&s.Service).Errors
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
@@ -50,15 +41,10 @@ func (e SysUser) Insert(c *gin.Context) {
 
 // Delete
 // @Summary 删除用户数据
-// @Param userId path int true "userId"
-// @Success 200 {object} response.Response "{"code": 200, "data": [...]}"
 func (e SysUser) Delete(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.SysUserById{}
-	err := e.MakeContext(c).
-		MakeOrm().
-		Bind(&req, nil).
-		MakeService(&s.Service).Errors
+	err := e.MakeContext(c).MakeOrm().Bind(&req, nil).MakeService(&s.Service).Errors
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
@@ -78,18 +64,10 @@ func (e SysUser) Delete(c *gin.Context) {
 
 // Get
 // @Summary 获取用户
-// @Description 获取JSON
-// @Tags 用户
-// @Param userId path int true "用户编码"
-// @Success 200 {object} response.Response "{"code": 200, "data": [...]}"
 func (e SysUser) Get(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.SysUserById{}
-	err := e.MakeContext(c).
-		MakeOrm().
-		Bind(&req, nil).
-		MakeService(&s.Service).
-		Errors
+	err := e.MakeContext(c).MakeOrm().Bind(&req, nil).MakeService(&s.Service).Errors
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
@@ -108,31 +86,18 @@ func (e SysUser) Get(c *gin.Context) {
 
 // Update
 // @Summary 修改用户数据
-// @Description 获取JSON
-// @Tags 用户
-// @Accept  application/json
-// @Product application/json
-// @Param data body dto.SysUserUpdateReq true "body"
-// @Success 200 {object} response.Response "{"code": 200, "data": [...]}"
 func (e SysUser) Update(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.SysUserUpdateReq{}
-	err := e.MakeContext(c).
-		MakeOrm().
-		Bind(&req).
-		MakeService(&s.Service).
-		Errors
+	err := e.MakeContext(c).MakeOrm().Bind(&req).MakeService(&s.Service).Errors
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
 		return
 	}
-
 	req.SetUpdateBy(user.GetUserId(c))
-
 	//数据权限检查
 	p := actions.GetPermissionFromContext(c)
-
 	err = s.Update(&req, p)
 	if err != nil {
 		e.Logger.Error(err)
@@ -144,11 +109,7 @@ func (e SysUser) Update(c *gin.Context) {
 func (e SysUser) GetPage(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.SysUserGetPageReq{}
-	err := e.MakeContext(c).
-		MakeOrm().
-		Bind(&req).
-		MakeService(&s.Service).
-		Errors
+	err := e.MakeContext(c).MakeOrm().Bind(&req).MakeService(&s.Service).Errors
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
@@ -156,7 +117,6 @@ func (e SysUser) GetPage(c *gin.Context) {
 	}
 	//数据权限检查
 	p := actions.GetPermissionFromContext(c)
-
 	list := make([]models.SysUser, 0)
 	var count int64
 	err = s.GetPage(&req, p, &list, &count)
@@ -172,22 +132,15 @@ func (e SysUser) GetPage(c *gin.Context) {
 func (e SysUser) ResetPwd(c *gin.Context) {
 	s := service.SysUser{}
 	req := dto.ResetSysUserPwdReq{}
-	err := e.MakeContext(c).
-		MakeOrm().
-		Bind(&req, binding.JSON).
-		MakeService(&s.Service).
-		Errors
+	err := e.MakeContext(c).MakeOrm().Bind(&req, binding.JSON).MakeService(&s.Service).Errors
 	if err != nil {
 		e.Logger.Error(err)
 		e.Error(500, err, err.Error())
 		return
 	}
-
 	req.SetUpdateBy(user.GetUserId(c))
-
 	//数据权限检查
 	p := actions.GetPermissionFromContext(c)
-
 	err = s.ResetPwd(&req, p)
 	if err != nil {
 		e.Logger.Error(err)

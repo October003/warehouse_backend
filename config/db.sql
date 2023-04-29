@@ -9,7 +9,7 @@ INSERT ignore INTO sys_api VALUES (16, 'warehouse/apis.SysUser.ResetPwd-fm', '�
 INSERT ignore INTO sys_api VALUES (21, 'warehouse/apis.SysRole.GetPage-fm', '角色列表', '/api/role/get', 'BUS', 'GET', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
 INSERT ignore INTO sys_api VALUES (22, 'warehouse/apis.SysRole.Get-fm', '角色通过id获取', '/api/role/get/:id', 'BUS', 'GET', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
 INSERT ignore INTO sys_api VALUES (23, 'warehouse/apis.SysRole.Insert-fm', '角色创建', '/api/role/create', 'BUS', 'POST', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
-INSERT ignore INTO sys_api VALUES (24, 'warehouse/apis.SysRole.Update-fm', '角色编辑', '/api/role/get/:id', 'BUS', 'PUT', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
+INSERT ignore INTO sys_api VALUES (24, 'warehouse/apis.SysRole.Update-fm', '角色编辑', '/api/role/update/:id', 'BUS', 'PUT', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
 INSERT ignore INTO sys_api VALUES (25, 'warehouse/apis.SysRole.Delete-fm', '角色删除', '/api/role/delete', 'BUS', 'DELETE', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
 INSERT ignore INTO sys_api VALUES (26, 'warehouse/apis.SysRole.Update2DataScope-fm', '角色数据权限修改', '/api/roledatascope', 'BUS', 'PUT', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
 INSERT ignore INTO sys_api VALUES (27, 'warehouse/apis.SysRole.Update2Status-fm', '角色状态', '/api/role-status', 'BUS', 'PUT', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
@@ -46,19 +46,19 @@ INSERT ignore INTO sys_api VALUES (73, 'warehouse/apis.Details.QueryInbound-fm',
 INSERT ignore INTO sys_api VALUES (74, 'warehouse/apis.Details.CreateOutbound-fm', '创建出库明细', '/api/outbound/create', 'BUS', 'POST', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
 INSERT ignore INTO sys_api VALUES (75, 'warehouse/apis.Details.DeleteOutbound-fm', '删除出库明细', '/api/outbound/delete', 'BUS', 'DELETE', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
 INSERT ignore INTO sys_api VALUES (76, 'warehouse/apis.Details.QueryOutbound-fm', '查询出库明细', '/api/outbound/get', 'BUS', 'GET', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
-INSERT ignore INTO sys_api VALUES (77, 'warehouse/apis.Details.QueryByTimestamp-fm', '时间查询', '/api/query_by_timestamp', 'BUS', 'GET', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
+INSERT ignore INTO sys_api VALUES (77, 'warehouse/apis.Details.QueryByTimestamp-fm', '时间查询', '/api/query_by_timestamp', 'BUS', 'POST', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
 
-INSERT ignore INTO sys_api VALUES (81, 'warehouse/apis.Material.Create-fm', '添加物料信息', '/api/material/create', 'BUS', 'POST', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
-INSERT ignore INTO sys_api VALUES (82, 'warehouse/apis.Material.Query-fm', '查询物料信息', '/api/material/get', 'BUS', 'GET', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
-INSERT ignore INTO sys_api VALUES (83, 'warehouse/apis.Material.Delete-fm', '删除物料信息', '/api/material/delete', 'BUS', 'DELETE', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
-INSERT ignore INTO sys_api VALUES (84, 'warehouse/apis.Material.Update-fm', '更新物料信息', '/api/material/update', 'BUS', 'PUT', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
+INSERT ignore INTO sys_api VALUES (81, 'warehouse/apis.Material.Create-fm', '添加物料信息', '/api/item/create', 'BUS', 'POST', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
+INSERT ignore INTO sys_api VALUES (82, 'warehouse/apis.Material.Query-fm', '查询物料信息', '/api/item/get', 'BUS', 'GET', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
+INSERT ignore INTO sys_api VALUES (83, 'warehouse/apis.Material.Delete-fm', '删除物料信息', '/api/item/delete', 'BUS', 'DELETE', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
+INSERT ignore INTO sys_api VALUES (84, 'warehouse/apis.Material.Update-fm', '更新物料信息', '/api/item/update', 'BUS', 'PUT', '2023-03-24 14:20:15', '2023-03-24 14:20:15', NULL, 0, 0);
 
 INSERT ignore INTO sys_menu VALUES (2, 'Admin', '系统管理', 'api-server', '/admin', '/0/2', 'M', '无', '', 0, 1, '', 'Layout', 10, '0', '1', 0, 1, '2023-03-24 15:38:16.000', '2023-03-24 15:38:16.000', NULL);
 INSERT ignore INTO sys_menu VALUES (3, 'SysUserManage', '用户管理', 'user', '/admin/sys-user', '/0/2/3', 'C', '无', 'admin:sysUser:list', 2, 0, '', '/sys-user/index', 10, '0', '1', 0, 1, '2023-03-24 15:38:16.000', '2023-03-24 15:38:16.000', NULL);
-INSERT ignore INTO sys_menu VALUES (11, '', '新增管理员', 'app-group-fill', '', '/0/2/3/11', 'F', 'POST', 'admin:sysUser:add', 3, 0, '', '', 10, '0', '1', 0, 1, '2023-03-24 15:38:16.000','2023-03-24 15:38:16.000', NULL);
-INSERT ignore INTO sys_menu VALUES (12, '', '查询管理员', 'app-group-fill', '', '/0/2/3/12', 'F', 'GET', 'admin:sysUser:query', 3, 0, '', '', 40, '0', '1', 0, 1, '2023-03-24 15:38:16.000', '2023-03-24 15:38:16.000', NULL);
-INSERT ignore INTO sys_menu VALUES (13, '', '修改管理员', 'app-group-fill', '', '/0/2/3/13', 'F', 'PUT', 'admin:sysUser:edit', 3, 0, '', '', 30, '0', '1', 0, 1, '2023-03-24 15:38:16.000', '2023-03-24 15:38:16.000', NULL);
-INSERT ignore INTO sys_menu VALUES (14, '', '删除管理员', 'app-group-fill', '', '/0/2/3/14', 'F', 'DELETE', 'admin:sysUser:remove', 3, 0, '', '', 20, '0', '1', 0, 1, '2023-03-24 15:38:16.000', '2023-03-24 15:38:16.000', NULL);
+INSERT ignore INTO sys_menu VALUES (11, '', '新增用户', 'app-group-fill', '', '/0/2/3/11', 'F', 'POST', 'admin:sysUser:add', 3, 0, '', '', 10, '0', '1', 0, 1, '2023-03-24 15:38:16.000','2023-03-24 15:38:16.000', NULL);
+INSERT ignore INTO sys_menu VALUES (12, '', '查询用户', 'app-group-fill', '', '/0/2/3/12', 'F', 'GET', 'admin:sysUser:query', 3, 0, '', '', 40, '0', '1', 0, 1, '2023-03-24 15:38:16.000', '2023-03-24 15:38:16.000', NULL);
+INSERT ignore INTO sys_menu VALUES (13, '', '修改用户', 'app-group-fill', '', '/0/2/3/13', 'F', 'PUT', 'admin:sysUser:edit', 3, 0, '', '', 30, '0', '1', 0, 1, '2023-03-24 15:38:16.000', '2023-03-24 15:38:16.000', NULL);
+INSERT ignore INTO sys_menu VALUES (14, '', '删除用户', 'app-group-fill', '', '/0/2/3/14', 'F', 'DELETE', 'admin:sysUser:remove', 3, 0, '', '', 20, '0', '1', 0, 1, '2023-03-24 15:38:16.000', '2023-03-24 15:38:16.000', NULL);
 
 INSERT ignore INTO sys_menu VALUES (4, 'SysRoleManage', '角色管理', 'peoples', '/admin/sys-role', '/0/2/4', 'C', '无', 'admin:sysRole:list', 2, 1, '', '/sys-role/index', 20, '0', '1', 0, 1, '2023-03-24 15:38:16.000', '2023-03-24 15:38:16.000', NULL);
 INSERT ignore INTO sys_menu VALUES (21, '', '新增角色', 'app-group-fill', '', '/0/2/4/21', 'F', '', 'admin:sysRole:add', 4, 0, '', '', 1, '0', '1', 1, 1, '2023-03-24 15:38:16.000', '2023-03-24 15:38:16.000', NULL);
@@ -113,7 +113,7 @@ INSERT ignore INTO sys_menu_api_rule VALUES (9,82);
 INSERT ignore INTO sys_menu_api_rule VALUES (10,51);
 
 INSERT ignore INTO sys_menu_api_rule VALUES (11, 13);
-INSERT ignore INTO sys_menu_api_rule VALUES (12, 11);
+INSERT ignore INTO sys_menu_api_rule VALUES (12, 12);
 INSERT ignore INTO sys_menu_api_rule VALUES (13,14);
 INSERT ignore INTO sys_menu_api_rule VALUES (14,15);
 
@@ -155,7 +155,7 @@ INSERT ignore INTO sys_menu_api_rule VALUES (82,53);
 INSERT ignore INTO `sys_user` VALUES(1, 'admin', '$2a$10$.Dj5uoorxg3P9Byosj7hbuOFDNM/TVfvwlDHOHq6F1CCWFMHWktaK','系统管理员','电话','',1,1,'2',0,0,'2023-03-24 13:19:21','2023-03-24 13:19:21',NULL);
 
 INSERT ignore INTO sys_role VALUES (1, '系统管理员', '2', 'admin', 1, '', '', 1, '', 1, 1, '2023-03-24 14:20:15.000', '2023-03-24 14:20:15.000', NULL);
-INSERT ignore INTO sys_role VALUES (2, '普通用户', '2', 'normal', 1, '', '', 1, '', 1, 1, '2023-03-24 14:20:15.000', '2023-03-24 14:20:15.000', NULL);
+INSERT ignore INTO sys_role VALUES (2, '普通用户', '2', '普通权限', 1, '', '', 1, '', 1, 1, '2023-03-24 14:20:15.000', '2023-03-24 14:20:15.000', NULL);
 
 INSERT ignore INTO sys_dept VALUES (1, 0, '/0/1/', 'XX省', 0, '', '', '2', 1, 1, '2023-03-20 14:44:50.681', '2023-03-20 14:44:50.681', NULL);
 INSERT ignore INTO sys_dept VALUES (11, 1, '/0/1/11/', 'XX市', 1, '', '', '2', 1, 1, '2023-03-20 14:44:50.681', '2023-03-20 14:44:50.681', NULL);
